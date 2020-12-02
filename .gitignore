@@ -1,0 +1,9 @@
+# Test binary
+*.test
+
+# Binaries for programs and plugins
+*.exe
+*.exe~
+
+# AOC Inputs are not permitted to be shared.
+**/input
