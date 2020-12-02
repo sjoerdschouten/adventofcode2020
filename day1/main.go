@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
   "time"
-  "github.com/sjoerdschouten/adventofcode2020/util"
+  "github.com/sjoerdschouten/adventofcode2020/utils"
 )
 
 // getProduct checks if an array contains three values
@@ -17,7 +17,7 @@ import (
       for y := j+1; y < len(input); y++ {
         if (input[i] + input[j] + input[y] ==  2020) {
           sum = input[i] * input[j] * input[y]
-          return fmt.Sprint("%d + %d + %d == 2020, multiplied it is: %d", input[i], input[j], input[y], sum), nil
+          return fmt.Sprintf("%d + %d + %d == 2020, multiplied it is: %d", input[i], input[j], input[y], sum), nil
         }
       }
     }     
@@ -33,7 +33,7 @@ func getTwentyTwenty(input []int) (string, error) {
     for j := i+1; j < len(input); j++ {
       if (input[i] + input[j] ==  2020) {
         sum = input[i] * input[j]
-        return fmt.Sprint("%d + %d == 2020, multiplied it is: %d", input[i], input[j], sum), nil
+        return fmt.Sprintf("%d + %d == 2020, multiplied it is: %d", input[i], input[j], sum), nil
       }
     }     
   }
@@ -43,7 +43,7 @@ func getTwentyTwenty(input []int) (string, error) {
 
 func main() {
   // read input
-  lines, err := util.ReadInts("./input/input")
+  lines, err := util.ReadIntegers("./input/input")
   if err != nil {
     log.Fatalf("readLines: %s", err)
   }
