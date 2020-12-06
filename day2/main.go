@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"log"
-	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -12,37 +11,18 @@ import (
 )
 
 func main() {
-  startTime := time.Now()
   input, err := util.ReadLines("./input/input.txt")
   if err != nil {
     log.Fatalf("ReadLines(): %s", err)
   }
-  fmt.Println("Part 1:", solvePuzzleOne(input), "Took:", time.Since(startTime))
+
+  startTime := time.Now()
+  result := solvePuzzleOne(input)
+  fmt.Println("Part 1:", result, "Took:", time.Since(startTime))
   
+  result = solvePuzzleTwo(input)
   startTime = time.Now()
-  fmt.Println("Part 2:", solvePuzzleTwo(input), "Took:", time.Since(startTime))
-}
-
-func solvePuzzleOne(input []string) int {
-  var valid int
-  for _, line := range input {
-    set := parseLineToSet(line)
-    if (satisfiesPolicy(set)) {
-      valid++
-    }
-  }
-  return valid
-}
-
-func solvePuzzleTwo(input []string) int {
-  var valid int
-  for _, line := range input {
-    set := parseLineToSet(line)
-    if (satisfiesEnhancedPolicy(set)) {
-      valid++
-    }
-  }
-  return valid
+  fmt.Println("Part 2:", result, "Took:", time.Since(startTime))
 }
 
 type Policy struct {
@@ -56,40 +36,58 @@ type Set struct {
   Password string
 }
 
+
+func solvePuzzleOne(input []string) string{
+  count := 0
+  for _, line := range input {
+    set := parseLineToSet(line)
+    if (set.satisfiesPolicy()) {
+      count++
+    }
+  }
+  return fmt.Sprint(count)
+}
+
+func solvePuzzleTwo(input []string) string {
+  count := 0
+  for _, line := range input {
+    set := parseLineToSet(line)
+    if (set.satisfiesEnhancedPolicy()) {
+      count++
+    }
+  }
+  return fmt.Sprint(count)
+}
+
+
 // parseSet return an array with four elements representing the low, high, current letter and passsword
 func parseLineToSet(set string) *Set {
-  re := regexp.MustCompile(`^\d+`)
-  minimum, _ := strconv.Atoi(re.FindString(set))
-
-  re = regexp.MustCompile(`\d+( )`)
-  highString := re.FindString(set)
-  highString = strings.Trim(highString, " ")
-  maximum, _ := strconv.Atoi(highString)
-
-  re = regexp.MustCompile(`\w(:)`)
-  letter := re.FindString(set)[:1]
-
-  re = regexp.MustCompile(`[a-z]\w+`)
-  passWord := re.FindString(set)
+  split := strings.Fields(set)
+  minMax :=  strings.Split(split[0], "-")
+  min, _ := strconv.Atoi(minMax[0])
+  max, _ := strconv.Atoi(minMax[1])
   
-  setStruct := &Set{
+  letter := string(split[1][0])
+
+  passWord := split[2] 
+  
+  return &Set{
     Policy: Policy{
-      Minimum: minimum,
-      Maximum: maximum,
+      Minimum: min,
+      Maximum: max, 
     },
     Letter: letter,
     Password: passWord,
   }
-  return setStruct
 }
 
-func satisfiesPolicy(set *Set) bool {
+func (set *Set)satisfiesPolicy() bool {
   letterCount := strings.Count(set.Password, set.Letter)
   return letterCount >= set.Minimum && letterCount <= set.Maximum
 }
 
-func satisfiesEnhancedPolicy(set *Set) bool {
-  if (string(set.Password[set.Minimum -1]) == set.Letter && string(set.Password[set.Maximum -1]) != set.Letter) {
+func (set *Set)satisfiesEnhancedPolicy() bool {
+  if (string(set.Password[set.Policy.Minimum -1]) == set.Letter && string(set.Password[set.Maximum -1]) != set.Letter) {
     return true
   } else if (string(set.Password[set.Minimum -1]) != set.Letter && string(set.Password[set.Maximum -1]) == set.Letter) {
     return true
