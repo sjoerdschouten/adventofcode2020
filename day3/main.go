@@ -14,25 +14,52 @@ func main() {
     log.Fatalf("ReadLines(): %s", err)
   }
   startTime := time.Now()
-  result := solvePuzzleOne(input)
+  result := solve1(input)
   fmt.Println("Part 1:", result, "Took:", time.Since(startTime))
+  startTime = time.Now()
+  result = solve2(input)
+  fmt.Println("Part 2:", result, "Took:", time.Since(startTime))
 }
 
-func solvePuzzleOne(input []string) (answer int) {
-    rightAdd := 3
-    downAdd := 1
-    currentRight := rightAdd
-    currentDown := downAdd
-    rightMax := len(input[0])
-    tree := '#'
-    
-    for currentDown < len(input) {
-      if input[currentDown][currentRight] == byte(tree) {
-        answer ++
-      }
+type Slope struct {
+  Right int
+  Down int
+}
 
-      currentDown = currentDown + downAdd
-      currentRight = (currentRight + rightAdd) % rightMax
+// Returns the amount of trees hit given a slope
+func (slope *Slope) treesHit(input []string) (hit int) {
+  x := slope.Right
+  y := slope.Down
+  for y < len(input) {
+    if input[y][x] == byte('#') {
+      hit++
     }
-    return
+    x = (x + slope.Right) % len(input[0])
+    y += slope.Down
+  }
+  return
+}
+
+func solve1(input []string) (answer int) {
+  slope := &Slope {
+    Right: 3,
+    Down: 1,
+  }
+  answer = slope.treesHit(input)
+  return
+}
+
+func solve2(input []string) (answer int) {
+  slopes := []*Slope {
+    {1,1},
+    {3,1},
+    {5,1},
+    {7,1},
+    {1,2},
+  }
+  answer = 1
+  for _, slope := range slopes {
+    answer *= slope.treesHit(input)
+  }
+  return
 }
