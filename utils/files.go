@@ -4,8 +4,20 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"strings"
+  "strings"
+  "io/ioutil"
+
 )
+
+//
+func ReadEntireFile(name string) string {
+  result, err := ioutil.ReadFile(name)
+  if err != nil {
+    panic(err)
+  }
+
+  return string(result)
+}
 
 // ReadNonEmptyLines reada all lines from a provided filepath and returns a slice of string
 // an empty line in the source file is used to seperate each element.
@@ -33,11 +45,10 @@ func ReadNonEmptyLines(path string) ([][]string, error) {
         buffer = append(buffer, block)
         block = []string{}
     }
-}
-
-if len(block) != 0 {
+  }
+  if len(block) != 0 {
     buffer = append(buffer, block)
-}
+  }
   return buffer, nil
 }
 

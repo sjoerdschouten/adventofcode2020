@@ -1,1 +1,5 @@
+github.com/hyperledger/fabric v2.1.1+incompatible h1:cYYRv3vVg4kA6DmrixLxwn1nwBEUuYda8DsMwlaMKbY=
+golang.org/x/text v0.3.4 h1:0YWbFKbhXG/wIiuHDSKpS0Iy7FSA+u45VtBMfQcFTTc=
+golang.org/x/text v0.3.4/go.mod h1:5Zoc/QRtKVWzQhOtBMvqHzDpF6irO9z98xDceosuGiQ=
+golang.org/x/tools v0.0.0-20180917221912-90fa682c2a6e/go.mod h1:n7NCudcB/nEzxVGmLbDWY5pfWTLqBcC2KZ6jyYvM4mQ=
 k8s.io/kubernetes v1.19.4 h1:3cKXaFFb+2yIBM5jILpuyx6m2dW2cgPcjYbNybhpewo=
